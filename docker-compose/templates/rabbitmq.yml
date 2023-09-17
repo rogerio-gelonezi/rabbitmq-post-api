@@ -1,0 +1,19 @@
+version: "3.8"
+services:
+  rabbitmq:
+    image: rabbitmq:3.11.23-management
+    container_name: rabbitmq
+    ports:
+      - 61613:61613
+      - 5672:5672
+      - 15672:15672
+    healthcheck:
+      test: [ "CMD", "nc", "-z", "localhost", "5672" ]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: MyAw3someSecret
+    volumes:
+      - ../.environment/rabbitmq:/var/lib/rabbitmq/mnesia
