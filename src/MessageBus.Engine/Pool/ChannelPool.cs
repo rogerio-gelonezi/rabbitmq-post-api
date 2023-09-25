@@ -34,13 +34,13 @@ internal class ChannelPool : IChannelPool
         {
             if (_pools.TryGetValue(queue, out var pool))
             {
-                _logger.LogDebug(string.Format(CultureInfo.InvariantCulture, Resources.ChannelPool_MessageBus_Retrieved, queue));
+                _logger.LogDebug("MessageBus retrieved from cache to queue {queue}.", queue);
                 return pool;
             }
 
             pool = new DefaultObjectPool<ChannelPooledObject>(new ChannelPooledObjectPolicy(_messageBus));
             _pools[queue] = pool;
-            _logger.LogDebug(string.Format(CultureInfo.InvariantCulture, Resources.ChannelPool_MessageBus_Insertion, queue));
+            _logger.LogDebug("MessageBus inserted into cache for queue {queue}", queue);
             
             return pool;
         }

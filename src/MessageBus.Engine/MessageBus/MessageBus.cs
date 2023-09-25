@@ -15,7 +15,7 @@ internal class MessageBus : IMessageBus
 
     private static readonly IDictionary<string, object> Arguments = new Dictionary<string, object> { [ArgumentMaxPriority] = 5 };
 
-    private IConnection _connection;
+    private IConnection? _connection;
     private readonly object _lock = new();
     private readonly IConnectionFactory _connectionFactory;
     private readonly ILogger<MessageBus> _logger;
@@ -50,14 +50,14 @@ internal class MessageBus : IMessageBus
 
             lock (_lock)
             {
-                _logger.LogInformation(string.Format(CultureInfo.InvariantCulture, Resources.Queue_Connection_With_Success, queue));
+                _logger.LogInformation("Connection successfully made to queue {queue}.", queue);
             }
         }
         catch (Exception e)
         {
             lock (_lock)
             {
-                _logger.LogWarning(string.Format(CultureInfo.InvariantCulture, Resources.Queue_Connection_With_Error, queue, e));
+                _logger.LogWarning("Error connecting to queue {queue}. Details: {exception}.", queue, e);
             }
 
             throw;
@@ -70,6 +70,8 @@ internal class MessageBus : IMessageBus
         {
             if (!IsConnected)
                 TryConnect();
+            if (_connection == null)
+                throw new ApplicationException("Error establishing connection to MessageBus");
             
             var model = _connection.CreateModel();
             model.ConfirmSelect();
@@ -77,10 +79,9 @@ internal class MessageBus : IMessageBus
                            prefetchCount: _options.PrefetchCount,
                            global: false);
             
-            
             lock (_lock)
             {
-                _logger.LogInformation(Resources.Model_Created_With_Success);
+                _logger.LogInformation("MessageBus Model successfully created.");
             }
             
             return model;
@@ -89,19 +90,12 @@ internal class MessageBus : IMessageBus
         {
             lock (_lock)
             {
-                _logger.LogWarning(string.Format(CultureInfo.InvariantCulture, Resources.Model_Created_With_Error, e));
+                _logger.LogWarning("Error creating the MessageBus Model. Details: {exception}.", e);
             }
 
             throw;
         }
         
-    }
-
-    public void ConnectConsumer(IModel channel, string queue, IBasicConsumer consumer)
-    {
-        channel.BasicConsume(queue: queue,
-                             autoAck: false,
-                             consumer: consumer);
     }
     
     private void TryConnect()
@@ -125,21 +119,21 @@ internal class MessageBus : IMessageBus
         {
             _connection = _connectionFactory.CreateConnection();
             _connection.ConnectionShutdown += OnDisconnect;
-            _logger.LogInformation(Resources.MessageBus_Connection_With_Success);
+            _logger.LogInformation("Connection to MessageBus completed successfully.");
         });
     }
 
     private void OnDisconnect(object? sender, ShutdownEventArgs e)
     {
-        _logger.LogError(Resources.MessageBus_Connection_Lost);
+        _logger.LogError("Connection to MessageBus was lost.");
         var policy = Policy.Handle<BrokerUnreachableException>().RetryForever();
         policy.Execute(TryConnect);
     }
 
     private void RetryConnect(int retryCount, Exception exception)
     {
-        _logger.LogWarning(string.Format(CultureInfo.InvariantCulture, Resources.MessageBus_Connection_Attempt, retryCount));
+        _logger.LogWarning("MessageBus connection attempt number {retryCount}.", retryCount);
         if (retryCount < 3) return;
-        _logger.LogError(string.Format(CultureInfo.InvariantCulture, Resources.MessageBus_Connection_Error, retryCount));
+        _logger.LogError("Error connecting to MessageBus, retry attempts {retryCount}", retryCount);
     }
 }

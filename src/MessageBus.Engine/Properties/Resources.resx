@@ -18,36 +18,6 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
-    <data name="Queue_Connection_With_Success" xml:space="preserve">
-        <value>Connection successfully made to queue {0}.</value>
-    </data>
-    <data name="Queue_Connection_With_Error" xml:space="preserve">
-        <value>Error connecting to queue {0}. Details: {1}.</value>
-    </data>
-    <data name="Model_Created_With_Success" xml:space="preserve">
-        <value>MessageBus Model successfully created.</value>
-    </data>
-    <data name="Model_Created_With_Error" xml:space="preserve">
-        <value>Error creating the MessageBus Model. Details: {0}.</value>
-    </data>
-    <data name="MessageBus_Connection_With_Success" xml:space="preserve">
-        <value>Connection to MessageBus completed successfully.</value>
-    </data>
-    <data name="MessageBus_Connection_Lost" xml:space="preserve">
-        <value>Connection to MessageBus was lost.</value>
-    </data>
-    <data name="MessageBus_Connection_Attempt" xml:space="preserve">
-        <value>MessageBus connection attempt number {0}.</value>
-    </data>
-    <data name="MessageBus_Connection_Error" xml:space="preserve">
-        <value>Error connecting to MessageBus: Details: {0}.</value>
-    </data>
-    <data name="Publishing_To_Queue" xml:space="preserve">
-        <value>Publishing message to queue {0}.</value>
-    </data>
-    <data name="Publishing_To_Queue_With_Error" xml:space="preserve">
-        <value>Error publishing message to queue {0}. Details: {1}</value>
-    </data>
     <data name="Validator_Options_Hostname" xml:space="preserve">
         <value>RabbitMQ hostname was not provided in the environment variables, see the project README.</value>
     </data>
@@ -56,11 +26,5 @@
     </data>
     <data name="Validator_Options_Password" xml:space="preserve">
         <value>RabbitMQ password was not provided in the environment variables, see the project README.</value>
-    </data>
-    <data name="ChannelPool_MessageBus_Insertion" xml:space="preserve">
-        <value>MessageBus inserted into cache for queue {0}.</value>
-    </data>
-    <data name="ChannelPool_MessageBus_Retrieved" xml:space="preserve">
-        <value>MessageBus retrieved from cache to queue {0}.</value>
     </data>
 </root>

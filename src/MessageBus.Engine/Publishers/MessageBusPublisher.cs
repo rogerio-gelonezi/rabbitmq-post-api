@@ -21,25 +21,25 @@ internal class MessageBusPublisher : IMessageBusPublisher
         _channelPool = channelPool;
     }
 
-    public void Publish(string queueName, string message)
+    public void Publish(string queue, string message)
     {
         try
         {
-            using var channelCache = _channelPool.Get(queueName);
-            _messageBus.CreateQueue(channelCache.Value.Channel, queueName);
+            using var channelCache = _channelPool.Get(queue);
+            _messageBus.CreateQueue(channelCache.Value.Channel, queue);
             
             channelCache.Value.Channel.BasicPublish(exchange: string.Empty,
-                                                    routingKey: queueName, 
+                                                    routingKey: queue, 
                                                     body: Encoding.UTF8.GetBytes(message),
                                                     basicProperties: channelCache.Value.Properties);
             
-            _logger.LogInformation(string.Format(CultureInfo.InvariantCulture, Resources.Publishing_To_Queue, queueName));
+            _logger.LogInformation("Publishing message to queue {queue}.", queue);
             
             channelCache.Value.Channel.WaitForConfirmsOrDie();
         }
         catch (Exception e)
         {
-            _logger.LogError(string.Format(CultureInfo.InvariantCulture, Resources.Publishing_To_Queue_With_Error, queueName, e));
+            _logger.LogError("Error publishing message to queue {queue}. Details: {exception}", queue, e);
             
             throw;
         }

@@ -2,5 +2,5 @@
 
 public interface IMessageBusPublisher
 {
-    void Publish(string queueName, string message);
+    void Publish(string queue, string message);
 }
