@@ -1,0 +1,10 @@
+﻿<Project>
+    <PropertyGroup Label="Common Properties">
+        <TargetFramework>net8.0</TargetFramework>
+        <LangVersion>latest</LangVersion>
+    </PropertyGroup>
+    
+    <PropertyGroup Label="Packages">
+        <RabbitMQClient>"6.5.0"</RabbitMQClient>
+    </PropertyGroup>
+</Project>
