@@ -13,6 +13,8 @@ volumes:
     driver: local
   logstashdata01:
     driver: local
+  fleetserverdata:
+    driver: local
 
 networks:
   default:
@@ -27,30 +29,35 @@ services:
   
   elasticsearch-setup:
     extends:
-      file: templates/elasticsearch.yml
+      file: templates/elk/elasticsearch.yml
       service: elasticsearch-setup
   
   es01:
     extends:
-      file: templates/elasticsearch.yml
+      file: templates/elk/elasticsearch.yml
       service: es01
   
   kibana:
     extends:
-      file: templates/elasticsearch.yml
+      file: templates/elk/elasticsearch.yml
       service: kibana
 
   metricbeat01:
     extends:
-      file: templates/elasticsearch.yml
+      file: templates/elk/elasticsearch.yml
       service: metricbeat01
   
   filebeat01:
     extends:
-      file: templates/elasticsearch.yml
+      file: templates/elk/elasticsearch.yml
       service: filebeat01
 
   logstash01:
     extends:
-      file: templates/elasticsearch.yml
+      file: templates/elk/elasticsearch.yml
       service: logstash01
+
+  fleet-server:
+    extends:
+      file: templates/elk/elasticsearch.yml
+      service: fleet-server

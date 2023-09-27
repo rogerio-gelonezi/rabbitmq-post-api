@@ -27,4 +27,7 @@
     <data name="Validator_Options_Password" xml:space="preserve">
         <value>RabbitMQ password was not provided in the environment variables, see the project README.</value>
     </data>
+    <data name="Error_MessageBus_Connection" xml:space="preserve">
+        <value>Error establishing connection to MessageBus.</value>
+    </data>
 </root>
