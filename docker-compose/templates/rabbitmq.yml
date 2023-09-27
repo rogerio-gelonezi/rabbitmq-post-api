@@ -13,7 +13,5 @@ services:
       timeout: 30s
       retries: 3
     environment:
-      RABBITMQ_DEFAULT_USER: admin
-      RABBITMQ_DEFAULT_PASS: MyAw3someSecret
-    volumes:
-      - ../.environment/rabbitmq:/var/lib/rabbitmq/mnesia
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
