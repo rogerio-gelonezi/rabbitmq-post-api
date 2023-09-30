@@ -1,0 +1,10 @@
+﻿version: "3.8"
+services:
+  message-publisher-api:
+    image: rogeriogelonezi/message-publisher-webapi:latest
+    container_name: message-publisher-api
+    ports:
+      - 8080:80
+    environment:
+      MESSAGEBUS_USERNAME: ${RABBITMQ_DEFAULT_USER}
+      MESSAGEBUS_PASSWORD: ${RABBITMQ_DEFAULT_PASS}
