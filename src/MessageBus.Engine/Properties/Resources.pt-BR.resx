@@ -27,4 +27,7 @@
     <data name="Validator_Options_Password" xml:space="preserve">
         <value>Senha do RabbitMQ não foi informado nas variáveis de ambiente, consulte o README do projeto.</value>
     </data>
+    <data name="Error_MessageBus_Connection" xml:space="preserve">
+        <value>Erro ao estabelecer conexão ao MessageBus.</value>
+    </data>
 </root>

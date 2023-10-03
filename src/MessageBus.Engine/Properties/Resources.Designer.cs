@@ -60,6 +60,15 @@ namespace MessageBus.Engine.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error establishing connection to MessageBus..
+        /// </summary>
+        internal static string Error_MessageBus_Connection {
+            get {
+                return ResourceManager.GetString("Error_MessageBus_Connection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to RabbitMQ hostname was not provided in the environment variables, see the project README..
         /// </summary>
         internal static string Validator_Options_Hostname {

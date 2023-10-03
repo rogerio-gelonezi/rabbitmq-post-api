@@ -1,0 +1,66 @@
+﻿version: "3.8"
+
+volumes:
+  certs:
+    driver: local
+  esdata01:
+    driver: local
+  kibanadata:
+    driver: local
+  metricbeatdata01:
+    driver: local
+  filebeatdata01:
+    driver: local
+  logstashdata01:
+    driver: local
+
+networks:
+  default:
+    name: elastic
+    external: false
+
+services:
+  rabbitmq:
+    extends:
+      file: templates/rabbitmq.yml
+      service: rabbitmq
+  
+  message-publisher-api:
+    extends:
+      file: templates/api.yml
+      service: message-publisher-api
+    environment:      
+      MESSAGEBUS_HOSTNAME: rabbitmq
+    hostname: message-publisher-api
+
+  elasticsearch-setup:
+    extends:
+      file: templates/elk/elasticsearch.yml
+      service: elasticsearch-setup
+  
+  es01:
+    extends:
+      file: templates/elk/elasticsearch.yml
+      service: es01
+  
+  kibana:
+    extends:
+      file: templates/elk/elasticsearch.yml
+      service: kibana
+
+  metricbeat01:
+    extends:
+      file: templates/elk/elasticsearch.yml
+      service: metricbeat01
+  
+  filebeat01:
+    extends:
+      file: templates/elk/elasticsearch.yml
+      service: filebeat01
+    depends_on:
+      - message-publisher-api
+
+  logstash01:
+    extends:
+      file: templates/elk/elasticsearch.yml
+      service: logstash01

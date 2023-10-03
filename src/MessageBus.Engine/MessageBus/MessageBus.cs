@@ -71,7 +71,7 @@ internal class MessageBus : IMessageBus
             if (!IsConnected)
                 TryConnect();
             if (_connection == null)
-                throw new ApplicationException("Error establishing connection to MessageBus");
+                throw new ApplicationException(Resources.Error_MessageBus_Connection);
             
             var model = _connection.CreateModel();
             model.ConfirmSelect();

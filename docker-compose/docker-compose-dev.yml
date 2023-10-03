@@ -4,3 +4,10 @@ services:
     extends:
       file: templates/rabbitmq.yml
       service: rabbitmq
+  
+  message-publisher-api:
+    extends:
+      file: templates/api.yml
+      service: message-publisher-api
+    environment:
+      MESSAGEBUS_HOSTNAME: rabbitmq
