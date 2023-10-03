@@ -13,8 +13,6 @@ volumes:
     driver: local
   logstashdata01:
     driver: local
-  fleetserverdata:
-    driver: local
 
 networks:
   default:
@@ -33,7 +31,8 @@ services:
       service: message-publisher-api
     environment:      
       MESSAGEBUS_HOSTNAME: rabbitmq
-    
+    hostname: message-publisher-api
+
   elasticsearch-setup:
     extends:
       file: templates/elk/elasticsearch.yml
@@ -65,8 +64,3 @@ services:
     extends:
       file: templates/elk/elasticsearch.yml
       service: logstash01
-
-  fleet-server:
-    extends:
-      file: templates/elk/elasticsearch.yml
-      service: fleet-server
