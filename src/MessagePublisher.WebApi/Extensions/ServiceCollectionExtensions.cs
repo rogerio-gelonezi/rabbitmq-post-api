@@ -8,18 +8,16 @@ namespace MessagePublisher.WebApi.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddErrorFilter(this IServiceCollection services)
+    public static void AddErrorFilter(this IServiceCollection services)
     {
         services.AddMvc(options => options.Filters.Add(typeof(ErrorResponseFilter)))
             .ConfigureApiBehaviorOptions(options =>
             {
                 options.InvalidModelStateResponseFactory = context => new BadRequestObjectResult(ErrorResponseMapper.FromModelState(context.ModelState));
             });
-
-        return services;
     }
     
-    public static IServiceCollection AddNewtonsoftJson(this IServiceCollection services)
+    public static void AddNewtonsoftJson(this IServiceCollection services)
     {
         services.AddControllersWithViews()
             .AddNewtonsoftJson(options =>
@@ -28,7 +26,5 @@ public static class ServiceCollectionExtensions
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver { NamingStrategy = new SnakeCaseNamingStrategy() };
                 options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
             });
-        
-        return services;
     }
 }

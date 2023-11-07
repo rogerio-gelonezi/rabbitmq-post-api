@@ -11,10 +11,12 @@ It was only possible to complete it with the help of my co-workers Alex Borges a
 
 ## Environment Variables
 
-| Variable                 |  Type  | Nullable | Default Value | Description                                                                 |
-|--------------------------|:------:|:--------:|---------------|-----------------------------------------------------------------------------|
-| MESSAGEBUS_HOSTNAME      | string |    No    |               |                                                                             |
-| MESSAGEBUS_USERNAME      | string |    No    |               |                                                                             |
-| MESSAGEBUS_PASSWORD      | string |    No    |               |                                                                             |
-| MESSAGEBUS_VIRTUALHOST   | string |   Yes    |               |                                                                             |
-| MESSAGEBUS_PREFETCHCOUNT |  int   |   Yes    | 1             | How many messages can be posted simultaneously, use 1 to stack all requests |
+| Variable                 |  Type   | Nullable | Default Value | Description                                                                 |
+|--------------------------|:-------:|:--------:|---------------|-----------------------------------------------------------------------------|
+| MESSAGEBUS_HOSTNAME      | string  |    No    |               |                                                                             |
+| MESSAGEBUS_PORT          | integer |   Yes    | 5672          |                                                                             |
+| MESSAGEBUS_USESSL        | boolean |   Yes    | False         |                                                                             |  
+| MESSAGEBUS_VIRTUALHOST   | string  |   Yes    | /             |                                                                             |
+| MESSAGEBUS_USERNAME      | string  |    No    |               |                                                                             |
+| MESSAGEBUS_PASSWORD      | string  |    No    |               |                                                                             |
+| MESSAGEBUS_PREFETCHCOUNT |   int   |   Yes    | 1             | How many messages can be posted simultaneously, use 1 to stack all requests |

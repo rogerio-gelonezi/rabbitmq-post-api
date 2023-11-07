@@ -14,7 +14,7 @@ internal static class MessageBusOptionsValidator
 
     private static void ValidateHostname(MessageBusOptions options)
     {
-        if (string.IsNullOrWhiteSpace(options.Password))
+        if (string.IsNullOrWhiteSpace(options.HostName))
             throw new InvalidOperationException(Resources.Validator_Options_Hostname);
     }
 
@@ -26,7 +26,7 @@ internal static class MessageBusOptionsValidator
 
     private static void ValidatePassword(MessageBusOptions options)
     {
-        if (string.IsNullOrWhiteSpace(options.HostName))
+        if (string.IsNullOrWhiteSpace(options.Password))
             throw new InvalidOperationException(Resources.Validator_Options_Password);
     }
 }

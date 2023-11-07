@@ -23,11 +23,6 @@
         <LastGenOutput>Resources.pt-BR.Designer.cs</LastGenOutput>
         <DependentUpon>Resources.resx</DependentUpon>
       </EmbeddedResource>
-      <EmbeddedResource Update="Properties\Resources.en-US.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>Resources.en-US.Designer.cs</LastGenOutput>
-        <DependentUpon>Resources.resx</DependentUpon>
-      </EmbeddedResource>
     </ItemGroup>
     <ItemGroup>
       <Compile Update="Properties\Resources.Designer.cs">
