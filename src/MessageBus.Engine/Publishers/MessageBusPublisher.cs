@@ -1,8 +1,6 @@
-﻿using System.Globalization;
-using System.Text;
+﻿using System.Text;
 using MessageBus.Engine.MessageBus;
 using MessageBus.Engine.Pool.Abstractions;
-using MessageBus.Engine.Properties;
 using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 

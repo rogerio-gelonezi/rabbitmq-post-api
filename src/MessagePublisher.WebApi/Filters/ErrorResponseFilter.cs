@@ -22,7 +22,7 @@ public class ErrorResponseFilter : IExceptionFilter
             KeyNotFoundException => 404,
             ArgumentException => 400,
             TimeoutException => 408,
-            _ => 500,
+            _ => 500
         };
     }
     

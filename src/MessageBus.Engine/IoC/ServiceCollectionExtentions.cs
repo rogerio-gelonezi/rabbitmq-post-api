@@ -14,24 +14,30 @@ namespace MessageBus.Engine.IoC;
 public static class ServiceCollectionExtentions
 {
     private const string MessageBusHostname = "MESSAGEBUS_HOSTNAME";
+    private static readonly (string Key, ushort Value) MessageBusPort = ("MESSAGEBUS_PORT", 5672);
+    private const string MessageBusUseSsl = "MESSAGEBUS_USESSL";
+    private static readonly (string Key, string Value) MessageBusVirtualHost = ("MESSAGEBUS_VIRTUALHOST", "/");
     private const string MessageBusUsername = "MESSAGEBUS_USERNAME";
     private const string MessageBusPassword = "MESSAGEBUS_PASSWORD";
-    private const string MessageBusVirtualHost = "MESSAGEBUS_VIRTUALHOST";
     private static readonly (string Key, ushort Value) MessageBusPrefetchCount = ("MESSAGEBUS_PREFETCHCOUNT", 1);
     
-    public static IServiceCollection AddMessageBus(this IServiceCollection services, IConfiguration configuration)
+    public static void AddMessageBus(this IServiceCollection services, IConfiguration configuration)
     {
         var prefetchCount = ResolvePrefetchCount(configuration);
+        var port = ResolvePort(configuration);
+        var virtualHost = ResolveVirtualHost(configuration);
+        
         services.AddMessageBus(p =>
         {
             p.HostName = configuration[MessageBusHostname];
             p.Username = configuration[MessageBusUsername];
             p.Password = configuration[MessageBusPassword];
-            p.VirtualHost = configuration[MessageBusVirtualHost];
+            p.VirtualHost = virtualHost;
             p.PrefetchCount = prefetchCount;
             p.ConsumerDispatchConcurrency = prefetchCount;
+            p.Port = port;
+            p.UseSsl = Convert.ToBoolean(configuration[MessageBusUseSsl]);
         });
-        return services;
     }
 
     private static void AddMessageBus(this IServiceCollection services, Action<MessageBusOptions> options)
@@ -51,15 +57,19 @@ public static class ServiceCollectionExtentions
         var connectionFactory = new ConnectionFactory
         {
             DispatchConsumersAsync = true,
-            ConsumerDispatchConcurrency = options.PrefetchCount,
+            ConsumerDispatchConcurrency = options.ConsumerDispatchConcurrency,
             HostName = options.HostName,
             UserName = options.Username,
-            Password = options.Password
+            Password = options.Password,
+            VirtualHost = options.VirtualHost,
+            Ssl =
+            {
+                ServerName = options.HostName,
+                Enabled = options.UseSsl
+            }
         };
         if (options.Port != default)
             connectionFactory.Port = options.Port;
-        if (!string.IsNullOrWhiteSpace(options.HostName))
-            connectionFactory.HostName = options.HostName;
 
         return connectionFactory;
     }
@@ -70,4 +80,19 @@ public static class ServiceCollectionExtentions
             ? prefetchCount
             : MessageBusPrefetchCount.Value;
     }
+    
+    private static ushort ResolvePort(IConfiguration configuration)
+    {
+        return ushort.TryParse(configuration[MessageBusPort.Key], out var prefetchCount)
+            ? prefetchCount
+            : MessageBusPort.Value;
+    }
+    
+    private static string? ResolveVirtualHost(IConfiguration configuration)
+    {
+        return string.IsNullOrWhiteSpace(configuration[MessageBusVirtualHost.Key])
+            ? MessageBusVirtualHost.Value
+            : configuration[MessageBusVirtualHost.Key];
+    }
+
 }

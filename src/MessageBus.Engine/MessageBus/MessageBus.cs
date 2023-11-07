@@ -1,9 +1,7 @@
-﻿using System.Globalization;
-using MessageBus.Engine.Properties;
+﻿using MessageBus.Engine.Properties;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Polly;
-using Polly.Retry;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Exceptions;
 
@@ -30,14 +28,6 @@ internal class MessageBus : IMessageBus
 
     private bool IsConnected => _connection?.IsOpen ?? false;
     
-    public IModel ConnectQueue(string queue)
-    {
-        TryConnect();
-        var model = CreateModel();
-        CreateQueue(model, queue);
-        return model;
-    }
-
     public void CreateQueue(IModel model, string queue)
     {
         try
@@ -113,7 +103,7 @@ internal class MessageBus : IMessageBus
         }
     }
 
-    private void Connect(RetryPolicy policy)
+    private void Connect(ISyncPolicy policy)
     {
         policy.Execute(() =>
         {
@@ -132,8 +122,8 @@ internal class MessageBus : IMessageBus
 
     private void RetryConnect(int retryCount, Exception exception)
     {
-        _logger.LogWarning("MessageBus connection attempt number {retryCount}.", retryCount);
+        _logger.LogWarning("MessageBus connection attempt number {retryCount}. Error message:{exception.Message}.", retryCount, exception.Message);        
         if (retryCount < 3) return;
-        _logger.LogError("Error connecting to MessageBus, retry attempts {retryCount}", retryCount);
+        _logger.LogError("Error connecting to MessageBus, retry attempts {retryCount}. Error message: {exception.Message} ", retryCount, exception.Message);
     }
 }
